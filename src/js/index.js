@@ -40,6 +40,7 @@ const controlSearch = async () => {
             clearLoader()
             searchView.renderResults(state.search.result)
         } catch (err) {
+            console.log(err)
             alert('Something wrong with the search...')
             clearLoader()
         }
@@ -102,7 +103,7 @@ const controlRecipe = async () => {
     }
 }
 
-['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe))
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
 /**
  * LIST CONTROLLER
@@ -119,11 +120,28 @@ const controlList = () => {
     })
 }
 
+// handling delete and update item events
+elements.shopping.addEventListener('click', e => {
+    const id = e.target.closest('.shopping__item').dataset.itemid
+
+    // handle the delete button
+    if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+        // delete from state
+        state.list.deleteItem(id)
+
+        // delete from UI
+        listView.deleteItem(id)
+    // handle the count update
+    } else if (e.target.matches('.shopping__count-value')) {
+        const val = parseFloat(e.target.value)
+
+        state.list.updateCount(id, val)
+    }
+})
+
 /**
  * LIKE CONTROLLER
  */
-state.likes = new Likes()
-likesView.toggleLikeMenu(state.likes.getNumLikes)
 const controlLike = () => {
     if (!state.likes) state.likes = new Likes()
 
@@ -159,23 +177,18 @@ const controlLike = () => {
     likesView.toggleLikeMenu(state.likes.getNumLikes())
 }
 
-// handling delete and update item events
-elements.shopping.addEventListener('click', e => {
-    const id = e.target.closest('.shopping__item').dataset.itemid
+// restore liked recipes on page load
+window.addEventListener('load', () => {
+    state.likes = new Likes()
 
-    // handle the delete button
-    if (e.target.matches('.shopping__delete, .shopping__delete *')) {
-        // delete from state
-        state.list.deleteItem(id)
+    // restore likes
+    state.likes.readStorage()
 
-        // delete from UI
-        listView.deleteItem(id)
-    // handle the count update
-    } else if (e.target.matches('.shopping__count-value')) {
-        const val = parseFloat(e.target.value)
+    // toggle like menu button
+    likesView.toggleLikeMenu(state.likes.getNumLikes())
 
-        state.list.updateCount(id, val)
-    }
+    // render the existing likes
+    state.likes.likes.forEach(like => likesView.renderLike(like))
 })
 
 // handling recipe button clicks
