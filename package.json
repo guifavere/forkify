@@ -1,0 +1,37 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "<h1 align=\"center\">   <strong>Forkify</strong> </h1>",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuilhermeFavere/forkify.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuilhermeFavere/forkify/issues"
+  },
+  "homepage": "https://github.com/GuilhermeFavere/forkify#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "4.2.0",
+    "webpack-cli": "2.0.12",
+    "webpack-dev-server": "3.2.1"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "babel-polyfill": "^6.26.0",
+    "fractional": "^1.0.0",
+    "uniqid": "^5.0.3"
+  }
+}
